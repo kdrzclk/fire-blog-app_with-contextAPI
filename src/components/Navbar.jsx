@@ -124,7 +124,7 @@ export default function Navbar() {
                   </Link>
 
                   <Link
-                    to="/login"
+                    to="/register"
                     style={{ textDecoration: "none", color: "black" }}
                   >
                     <MenuItem onClick={handleClose}>Register</MenuItem>

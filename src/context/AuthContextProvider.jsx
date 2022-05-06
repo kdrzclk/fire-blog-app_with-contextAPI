@@ -1,5 +1,4 @@
-import { Password } from "@mui/icons-material";
-import React, { useContext, createContext } from "react";
+import React, { useContext, createContext, useState, useEffect } from "react";
 import { auth, googleProvider } from "../utils/firebaseUtil";
 
 const AuthContext = createContext(); // öncelikle createcontext kullanılarak authcontext adından bir context oluştururuz (1)
@@ -11,7 +10,19 @@ export function useAuth() {
   return useContext(AuthContext); //(2)
 }
 
-const AuthContextProvider = () => {
+// authProvider kendi içerisinde olan herşeyi sarmallaması gerekir. children sarması lazım ki herkesle o dataları paylaşabilsin
+const AuthContextProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setCurrentUser(user);
+      setLoading(false);
+    });
+    return unsubscribe;
+  }, []);
+
   function signup(email, password) {
     return auth.createUserWithEmailAndPassword(email, password);
   }
@@ -41,7 +52,22 @@ const AuthContextProvider = () => {
     return currentUser.updatePassword(password);
   }
 
-  return <div></div>;
+  const values = {
+    currentUser,
+    signup,
+    login,
+    logout,
+    loginWithGoogle,
+    resetPassword,
+    updateEmail,
+    updatePassword,
+  };
+
+  return (
+    <AuthContext.Provider value={values}>
+      {!loading && children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthContextProvider;

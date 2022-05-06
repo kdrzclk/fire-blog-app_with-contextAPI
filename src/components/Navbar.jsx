@@ -84,14 +84,14 @@ export default function Navbar() {
                   onClose={handleClose}
                 >
                   <Link
-                    to="/login"
+                    to="/profile"
                     style={{ textDecoration: "none", color: "black" }}
                   >
                     <MenuItem onClick={handleClose}>Profile</MenuItem>
                   </Link>
 
-                  <Link to="/login">
-                    <MenuItem onClick={handleClose}>New</MenuItem>
+                  <Link to="/new-blog">
+                    <MenuItem onClick={handleClose}>New Blog</MenuItem>
                   </Link>
 
                   <Link to="/login">

@@ -10,7 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import cwLogo from "../assets/cw.jpeg";
 import { useAuth } from "../context/AuthContextProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const styles = {
   title: {
@@ -27,7 +27,8 @@ const styles = {
 export default function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const { currentUser } = useAuth();
+  const navigate = useNavigate();
+  const { currentUser, logout } = useAuth();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -35,6 +36,16 @@ export default function Navbar() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogOut = () => {
+    setAnchorEl(null);
+    logout();
+  };
+
+  const handleDashboard = () => {
+    setAnchorEl(null);
+    navigate("/");
   };
 
   return (
@@ -47,10 +58,16 @@ export default function Navbar() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={handleDashboard}
           >
             <img src={cwLogo} alt="clarusway" width="40px" />
           </IconButton>
-          <Typography variant="h6" component="div" sx={styles.title}>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={styles.title}
+            onClick={handleDashboard}
+          >
             ──── <span style={{ color: "#F5DEB3" }}>{"<KaDiR/>"}</span> BLOG
             ────
           </Typography>
@@ -95,7 +112,7 @@ export default function Navbar() {
                   </Link>
 
                   <Link to="/login">
-                    <MenuItem onClick={handleClose}>Logout</MenuItem>
+                    <MenuItem onClick={handleLogOut}>Logout</MenuItem>
                   </Link>
                 </Menu>
               </>

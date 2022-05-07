@@ -14,6 +14,7 @@ import * as yup from "yup";
 import { useAuth } from "../context/AuthContext";
 import loadingGif from "../assets/loading.gif";
 import googlePng from "../assets/google.png";
+import { Formik, Form } from "formik";
 
 const ValidationSchema = yup.object().shape({
   email: yup
@@ -38,7 +39,7 @@ const LoginAndRegisterForm = (props) => {
               {/* ── Register ── */}
               ── {props.method} ──
             </Typography>
-            <form style={useStyles.form} onSubmit={formik.handleSubmit}>
+            <Form style={useStyles.form} onSubmit={formik.handleSubmit}>
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -104,7 +105,7 @@ const LoginAndRegisterForm = (props) => {
                   </Button>
                 </>
               )}
-            </form>
+            </Form>
           </Grid>
         </Grid>
       </Grid>

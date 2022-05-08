@@ -8,8 +8,8 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import blokPng from "../assets/blok.png";
 import { useNavigate } from "react-router-dom";
-import { toastSuccessNotify, toastErrorNotify } from "../helpers/ToastNotify";
-import { useFormik } from "formik";
+// import { toastSuccessNotify, toastErrorNotify } from "../helpers/ToastNotify";
+// import { useFormik } from "formik";
 import * as yup from "yup";
 import { useAuth } from "../context/AuthContext";
 import loadingGif from "../assets/loading.gif";
@@ -26,6 +26,14 @@ const ValidationSchema = yup.object().shape({
 });
 
 const LoginAndRegisterForm = (props) => {
+  const { handleChange, handleBlur, errors, isSubmitting, values, touched } =
+    props;
+
+  const { loginWithGoogle } = useAuth();
+
+  const handleGoogleProvider = () => {
+    loginWithGoogle();
+  };
   return (
     <Grid container component="main" sx={useStyles.root}>
       <CssBaseline />
@@ -39,7 +47,7 @@ const LoginAndRegisterForm = (props) => {
               {/* ── Register ── */}
               ── {props.method} ──
             </Typography>
-            <Form style={useStyles.form} onSubmit={formik.handleSubmit}>
+            <Form style={useStyles.form}>
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -48,12 +56,12 @@ const LoginAndRegisterForm = (props) => {
                 label="Email"
                 name="email"
                 autoComplete="email"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                onChange={handleChange}
+                onBlur={handleBlur}
                 autoFocus
-                value={formik.values.email}
-                error={formik.touched.email && Boolean(formik.errors.email)}
-                helperText={formik.touched.email && formik.errors.email}
+                value={values.email}
+                error={touched.email && Boolean(errors.email)}
+                helperText={touched.email && errors.email}
               />
               <TextField
                 variant="outlined"
@@ -64,15 +72,13 @@ const LoginAndRegisterForm = (props) => {
                 type="password"
                 id="password"
                 autoComplete="password"
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={
-                  formik.touched.password && Boolean(formik.errors.password)
-                }
-                helperText={formik.touched.password && formik.errors.password}
+                value={values.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.password && Boolean(errors.password)}
+                helperText={touched.password && errors.password}
               />
-              {loading ? (
+              {isSubmitting ? (
                 <div style={useStyles.loadingContainer}>
                   <img
                     src={loadingGif}
@@ -88,7 +94,7 @@ const LoginAndRegisterForm = (props) => {
                     variant="contained"
                     sx={useStyles.submit}
                   >
-                    Register
+                    {props.method}
                   </Button>
                   <Button
                     fullWidth
@@ -181,10 +187,10 @@ const useStyles = {
   },
 };
 
-const Autorization = () => {
+const Autorization = (props) => {
   const navigate = useNavigate();
   const { signup, login, currentUser } = useAuth();
-  // const [method] = useState(props.method);
+  const [method] = useState(props.method);
 
   useEffect(() => {
     if (currentUser) {
@@ -200,7 +206,9 @@ const Autorization = () => {
         }}
         validationSchema={ValidationSchema}
         onSubmit={(values, actions) => {}}
-        component={LoginAndRegisterForm}
+        component={(props) => (
+          <LoginAndRegisterForm method={method} {...props} />
+        )}
       ></Formik>
     </div>
   );

@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import blokPng from "../assets/blok.png";
 import { useNavigate } from "react-router-dom";
-// import { toastSuccessNotify, toastErrorNotify } from "../helpers/ToastNotify";
+import { toastSuccessNotify, toastErrorNotify } from "../helpers/ToastNotify";
 // import { useFormik } from "formik";
 import * as yup from "yup";
 import { useAuth } from "../context/AuthContext";
@@ -205,7 +205,33 @@ const Autorization = (props) => {
           password: "",
         }}
         validationSchema={ValidationSchema}
-        onSubmit={(values, actions) => {}}
+        onSubmit={(values, actions) => {
+          if (method === "Login") {
+            login(values.email, values.password)
+              .then(() => {
+                toastSuccessNotify(`{method} Succesfully performed!`);
+                navigate("/");
+                actions.setSubmitting(false);
+              })
+              .catch((error) => {
+                toastErrorNotify(error.message);
+                actions.setSubmitting(false);
+                actions.resetForm();
+              });
+          } else {
+            signup(values.email, values.password)
+              .then(() => {
+                toastSuccessNotify(`{method} Succesfully performed!`);
+                navigate("/");
+                actions.setSubmitting(false);
+              })
+              .catch((error) => {
+                toastErrorNotify(error.message);
+                actions.setSubmitting(false);
+                actions.resetForm();
+              });
+          }
+        }}
         component={(props) => (
           <LoginAndRegisterForm method={method} {...props} />
         )}

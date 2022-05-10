@@ -8,11 +8,12 @@ import {
   CssBaseline,
 } from "@mui/material";
 import BlogForm from "../components/BlogForm";
-import { AddNewBlog, EditBlog } from "../helpers/firebaseContact";
+
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContextProvider";
 import { useBlog } from "../context/BlogContextProvider";
 import { toastSuccess, toastError } from "../helpers/toastNotify";
+import blog from "../assets/blok.png";
 
 const NewBlog = () => {
   const navigate = useNavigate();

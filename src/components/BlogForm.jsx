@@ -1,16 +1,11 @@
-import React from "react";
-import {
-  Container,
-  Box,
-  Avatar,
-  Typography,
-  Grid,
-  TextField,
-  Button,
-} from "@mui/material";
-import blog from "../assets/blok.png";
+import React, { useState } from "react";
+import { Container, Box, Grid, TextField, Button } from "@mui/material";
 
 const BlogForm = (props) => {
+  const { handler, blog } = props;
+
+  const [newBlog, setNewBlog] = useState(blog);
+
   const styles = {
     submit: {
       backgroundColor: "#046582",
@@ -21,13 +16,6 @@ const BlogForm = (props) => {
         backgroundColor: "#D5D5D5",
       },
     },
-  };
-
-  const handleChange = (e) => {
-    e.preventDefault();
-    const { name, value } = e.target;
-    // console.log(name, value);
-    setNewBlog({ ...newBlog, [name]: value });
   };
 
   return (
@@ -45,26 +33,7 @@ const BlogForm = (props) => {
             alignItems: "center",
           }}
         >
-          <Avatar
-            alt="avatar_img"
-            src={blog}
-            sx={{
-              width: 220,
-              height: 220,
-              marginTop: "20px",
-              backgroundColor: "#046582",
-            }}
-          />
-
-          <Typography
-            variant="h4"
-            component="h1"
-            sx={{ m: 4, color: "#046582" }}
-          >
-            ── New Blog ──
-          </Typography>
-
-          <form onSubmit={handleFormSubmit}>
+          <form onSubmit={() => handler(newBlog)}>
             <Grid spacing={4}>
               <Grid item xs={12}>
                 <TextField
@@ -76,10 +45,9 @@ const BlogForm = (props) => {
                   type="title"
                   value={newBlog.title}
                   autoComplete="on"
-                  // onChange={(e) =>
-                  //   setNewBlog({ ...newBlog, title: e.target.value })
-                  // }
-                  onChange={handleChange}
+                  onChange={(e) =>
+                    setNewBlog({ ...newBlog, title: e.target.value })
+                  }
                   //   fullWidth
                   required
                 />
@@ -95,10 +63,9 @@ const BlogForm = (props) => {
                   type="image-url"
                   value={newBlog.image}
                   autoComplete="on"
-                  // onChange={(e) =>
-                  //   setNewBlog({ ...newBlog, image: e.target.value })
-                  // }
-                  onChange={handleChange}
+                  onChange={(e) =>
+                    setNewBlog({ ...newBlog, image: e.target.value })
+                  }
                   //   fullWidth
                   required
                 />
@@ -115,10 +82,9 @@ const BlogForm = (props) => {
                   type="image-url"
                   value={newBlog.content}
                   autoComplete="on"
-                  // onChange={(e) =>
-                  //   setNewBlog({ ...newBlog, content: e.target.value })
-                  // }
-                  onChange={handleChange}
+                  onChange={(e) =>
+                    setNewBlog({ ...newBlog, content: e.target.value })
+                  }
                   //   fullWidth
                   required
                   rows={15}

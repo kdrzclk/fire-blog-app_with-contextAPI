@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Box, Grid, TextField, Button } from "@mui/material";
 
 const BlogForm = (props) => {
   const { handler, blog } = props;
 
   const [newBlog, setNewBlog] = useState(blog);
+
+  useEffect(() => {
+    setNewBlog(blog);
+  }, [blog]);
 
   const styles = {
     submit: {

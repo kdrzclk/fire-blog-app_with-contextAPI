@@ -1,26 +1,21 @@
-import React, { useState } from "react";
-import {
-  Container,
-  Box,
-  Avatar,
-  Typography,
-  Grid,
-  CssBaseline,
-} from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Container, Box, Avatar, Typography, CssBaseline } from "@mui/material";
 import BlogForm from "../components/BlogForm";
-
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContextProvider";
 import { useBlog } from "../context/BlogContextProvider";
 import { toastSuccess, toastError } from "../helpers/toastNotify";
 import blog from "../assets/blok.png";
 
 const UpdateBlog = ({ match }) => {
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
+
   const { getOneBlog, updateBlog } = useBlog();
   const result = getOneBlog(match.params.id);
   const res = result ? result[0] : { title: "", content: "", image: "" };
+
+  useEffect(() => {
+    setNewBlog(res);
+  }, [res]);
 
   const [newBlog, setNewBlog] = useState(res);
 

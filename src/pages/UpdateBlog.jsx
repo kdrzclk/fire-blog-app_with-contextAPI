@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Container, Box, Avatar, Typography, CssBaseline } from "@mui/material";
 import BlogForm from "../components/BlogForm";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +11,10 @@ const UpdateBlog = ({ match }) => {
 
   const { getOneBlog, updateBlog } = useBlog();
   const result = getOneBlog(match.params.id);
-  const res = result ? result[0] : { title: "", content: "", image: "" };
+
+  const res = useMemo(() => {
+    return result ? result[0] : { title: "", content: "", image: "" };
+  }, [result]);
 
   useEffect(() => {
     setNewBlog(res);

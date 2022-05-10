@@ -8,13 +8,81 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import blokPng from "../assets/blok.png";
 import { useNavigate } from "react-router-dom";
-import { toastSuccessNotify, toastErrorNotify } from "../helpers/ToastNotify";
-// import { useFormik } from "formik";
+import { toastSuccess, toastError } from "../helpers/toastNotify";
+import { useFormik } from "formik";
 import * as yup from "yup";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContextProvider";
 import loadingGif from "../assets/loading.gif";
 import googlePng from "../assets/google.png";
 import { Formik, Form } from "formik";
+
+const useStyles = {
+  root: {
+    height: "calc(100vh - 68px)",
+    "& .MuiPaper-root": {
+      borderRadius: "10px",
+      boxShadow: "10px 10px 5px 0px rgba(0,0,0,0.75);",
+      height: "fit-content",
+      marginTop: 20,
+      maxWidth: "500px",
+    },
+    marginTop: 68,
+  },
+  image: {
+    backgroundImage: "url(https://picsum.photos/1600/900)",
+    backgroundRepeat: "no-repeat",
+
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    width: "100%",
+    paddingTop: "40px",
+  },
+  paper: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    backgroundColor: "#046582",
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+  },
+  submit: {
+    backgroundColor: "#046582",
+    color: "white",
+    fontWeight: "bold",
+    "&:hover": {
+      color: "#046582",
+    },
+  },
+  header: {
+    fontFamily: "Girassol",
+    textAlign: "center",
+    color: "#046582",
+  },
+  loadingGif: {
+    width: 75,
+  },
+  loadingContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 15,
+  },
+  bottomLink: {
+    display: "flex",
+    justifyContent: "space-evenly",
+  },
+  googleImg: {
+    width: 75,
+    marginLeft: 10,
+  },
+  googleBtn: {
+    backgroundColor: "white",
+    fontWeight: "bold",
+  },
+};
 
 const ValidationSchema = yup.object().shape({
   email: yup
@@ -119,74 +187,6 @@ const LoginAndRegisterForm = (props) => {
   );
 };
 
-const useStyles = {
-  root: {
-    height: "calc(100vh - 68px)",
-    "& .MuiPaper-root": {
-      borderRadius: "10px",
-      boxShadow: "10px 10px 5px 0px rgba(0,0,0,0.75);",
-      height: "fit-content",
-      marginTop: 20,
-      maxWidth: "500px",
-    },
-    marginTop: 68,
-  },
-  image: {
-    backgroundImage: "url(https://picsum.photos/1600/900)",
-    backgroundRepeat: "no-repeat",
-
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    width: "100%",
-    paddingTop: "40px",
-  },
-  paper: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    backgroundColor: "#046582",
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-  },
-  submit: {
-    backgroundColor: "#046582",
-    color: "white",
-    fontWeight: "bold",
-    "&:hover": {
-      color: "#046582",
-    },
-  },
-  header: {
-    fontFamily: "Girassol",
-    textAlign: "center",
-    color: "#046582",
-  },
-  loadingGif: {
-    width: 75,
-  },
-  loadingContainer: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 15,
-  },
-  bottomLink: {
-    display: "flex",
-    justifyContent: "space-evenly",
-  },
-  googleImg: {
-    width: 75,
-    marginLeft: 10,
-  },
-  googleBtn: {
-    backgroundColor: "white",
-    fontWeight: "bold",
-  },
-};
-
 const Autorization = (props) => {
   const navigate = useNavigate();
   const { signup, login, currentUser } = useAuth();
@@ -209,24 +209,24 @@ const Autorization = (props) => {
           if (method === "Login") {
             login(values.email, values.password)
               .then(() => {
-                toastSuccessNotify(`{method} Succesfully performed!`);
+                toastSuccess(`{method} Succesfully performed!`);
                 navigate("/");
                 actions.setSubmitting(false);
               })
               .catch((error) => {
-                toastErrorNotify(error.message);
+                toastError(error.message);
                 actions.setSubmitting(false);
                 actions.resetForm();
               });
           } else {
             signup(values.email, values.password)
               .then(() => {
-                toastSuccessNotify(`{method} Succesfully performed!`);
+                toastSuccess(`{method} Succesfully performed!`);
                 navigate("/");
                 actions.setSubmitting(false);
               })
               .catch((error) => {
-                toastErrorNotify(error.message);
+                toastError(error.message);
                 actions.setSubmitting(false);
                 actions.resetForm();
               });

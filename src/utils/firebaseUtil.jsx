@@ -9,7 +9,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import "firebase/database";
+import { getDatabase } from "firebase/database";
 
 export const firebaseUtil = initializeApp({
   // apiKey: process.env.REACT_APP_FIREBASE_apiKey,
@@ -34,5 +34,5 @@ export const auth = getAuth(firebaseUtil);
 export const googleProvider = new GoogleAuthProvider();
 
 // export const auth = firebaseUtil.auth();
-// export const firebaseDB = firebaseUtil.database();
+export const firebaseDB = firebaseUtil.getDatabase();
 // export const googleProvider = new firebase.auth.GoogleAuthProvider();
